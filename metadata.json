@@ -1,0 +1,7 @@
+{
+  "name": "Klinik Famili TTDI - Sanctuary of Care",
+  "description": "A professional-grade landing page for Klinik Famili TTDI, a 24-hour medical clinic serving the TTDI neighborhood since 1988.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
