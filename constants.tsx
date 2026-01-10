@@ -5,92 +5,92 @@ import { Doctor, Service, Testimonial } from './types';
 export const DOCTORS: Doctor[] = [
   {
     id: '1',
-    name: 'Dr. Nordhiah Jury',
-    role: 'GP & Family Medicine',
-    experience: '32+ Years Experience',
-    quote: 'Dedicated to keeping families healthy for over three decades.',
-    languages: ['BM', 'EN', 'Mandarin'],
-    image: 'https://picsum.photos/seed/doc1/400/400'
+    name: "Dato' Dr. Balakrishnan",
+    role: 'Principal Dentist & Founder',
+    experience: '34+ Years Experience',
+    quote: 'Dedicated to providing quality dental care for the whole family.',
+    languages: ['BM', 'EN', 'Tamil'],
+    image: 'https://picsum.photos/seed/dentist1/400/400'
   },
   {
     id: '2',
-    name: 'Dr. Ahmad Nasir',
-    role: 'GP & Emergency Care',
-    experience: '15+ Years Experience',
-    quote: 'Available whenever your family needs urgent care, day or night.',
-    languages: ['BM', 'EN'],
-    image: 'https://picsum.photos/seed/doc2/400/400'
+    name: 'Dr. Priya Menon',
+    role: 'General Dentist',
+    experience: '12+ Years Experience',
+    quote: 'Gentle care for patients of all ages, making dental visits comfortable.',
+    languages: ['BM', 'EN', 'Tamil'],
+    image: 'https://picsum.photos/seed/dentist2/400/400'
   },
   {
     id: '3',
-    name: 'Dr. Sarah Lim',
-    role: 'Women\'s Health Specialist',
-    experience: '12+ Years Experience',
-    quote: 'Personalized care for every stage of a woman\'s life.',
-    languages: ['EN', 'BM', 'Cantonese'],
-    image: 'https://picsum.photos/seed/doc3/400/400'
+    name: 'Dr. Ahmad Faizal',
+    role: 'General Dentist',
+    experience: '8+ Years Experience',
+    quote: 'Modern techniques combined with a caring approach.',
+    languages: ['EN', 'BM'],
+    image: 'https://picsum.photos/seed/dentist3/400/400'
   }
 ];
 
 export const SERVICES: Service[] = [
   {
     id: '1',
-    title: 'General Consultation',
-    description: 'From flu to chronic care, our doctors provide comprehensive diagnosis and treatment.',
-    icon: '🩺'
+    title: 'General Check-up',
+    description: 'Comprehensive dental examination including oral cancer screening and treatment planning.',
+    icon: '🦷'
   },
   {
     id: '2',
-    title: 'Health Screening',
-    description: 'Tailored full-body check-ups including blood chemistry analysis and ultrasound.',
-    icon: '❤️'
+    title: 'Teeth Cleaning',
+    description: 'Professional scaling and polishing to remove plaque, tartar, and surface stains.',
+    icon: '✨'
   },
   {
     id: '3',
-    title: 'Cardiac Testing',
-    description: 'Advanced Resting ECG and Treadmill tests for heart health monitoring.',
-    icon: '🫀'
+    title: 'Fillings & Restorations',
+    description: 'Tooth-colored composite fillings and restorations for cavities and damaged teeth.',
+    icon: '🔧'
   },
   {
     id: '4',
-    title: 'Vaccinations',
-    description: 'Full range of immunizations for infants, adults, and international travelers.',
-    icon: '💉'
+    title: 'Extractions',
+    description: 'Safe and gentle tooth removal including wisdom teeth extractions.',
+    icon: '🏥'
   },
   {
     id: '5',
-    title: 'Women\'s Health',
-    description: 'Specialized Pap Smears, family planning, and maternity wellness services.',
-    icon: '🤰'
+    title: 'Root Canal Treatment',
+    description: 'Advanced endodontic treatment to save infected or damaged teeth.',
+    icon: '💉'
   },
   {
     id: '6',
-    title: 'Emergency Care',
-    description: '24/7 immediate medical attention for acute illnesses and minor injuries.',
-    icon: '🚨'
+    title: 'Dentures & Crowns',
+    description: 'Custom-made dentures, crowns, and bridges for missing or damaged teeth.',
+    icon: '👄'
   }
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: '1',
-    name: 'Sarah L.',
-    location: 'TTDI Resident since 1995',
-    content: 'Been coming here since my kids were babies. Now they bring their own children. That\'s the kind of trust you can\'t buy.',
+    name: 'Mei Ling T.',
+    location: 'Bangsar Resident',
+    content: "Been coming to Bala Dental for over 15 years. Dato' Dr. Bala is incredibly skilled and makes you feel at ease. Highly recommend!",
     rating: 5
   },
   {
     id: '2',
-    name: 'Ahmad R.',
-    location: 'Verified Patient',
-    content: 'The only 24-hour clinic I trust in the area. Dr. Nasir is incredibly thorough and empathetic.',
+    name: 'Rajesh K.',
+    location: 'Klang Patient',
+    content: 'The best dental clinic in Klang! Professional staff and modern equipment. My whole family comes here.',
     rating: 5
   },
   {
     id: '3',
-    name: 'Jessica W.',
-    location: 'Damansara Heights',
-    content: 'Efficient, professional, and very friendly. The 24-hour service saved us during a midnight fever scare.',
+    name: 'Sarah A.',
+    location: 'Bangsar Baru',
+    content: 'Finally found a dentist I trust. The clinic is clean, staff is friendly, and prices are reasonable.',
     rating: 5
   }
 ];

@@ -37,7 +37,7 @@ export const AppointmentForm: React.FC = () => {
     phone: '',
     date: '',
     time: '',
-    service: 'General Consultation',
+    service: 'General Check-up',
     notes: ''
   });
 
@@ -62,7 +62,7 @@ export const AppointmentForm: React.FC = () => {
       phone: '',
       date: '',
       time: '',
-      service: 'General Consultation',
+      service: 'General Check-up',
       notes: ''
     });
   };
@@ -103,7 +103,7 @@ export const AppointmentForm: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Phone</p>
-                    <p className="font-bold">03-7727 6671</p>
+                    <p className="font-bold">03-2284 6153</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4">
@@ -115,7 +115,7 @@ export const AppointmentForm: React.FC = () => {
                   </div>
                   <div>
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Email</p>
-                    <p className="font-bold">info@klinikfamili.com</p>
+                    <p className="font-bold">info@baladental.com</p>
                   </div>
                 </div>
               </div>
@@ -185,14 +185,14 @@ export const AppointmentForm: React.FC = () => {
                         value={formData.service}
                         onChange={(e) => setFormData({...formData, service: e.target.value})}
                       >
-                        <option>General Consultation</option>
-                        <option>Health Screening</option>
-                        <option>Vaccination</option>
-                        <option>Cardiac Test (ECG/Treadmill)</option>
-                        <option>Medical Checkup</option>
-                        <option>Ultrasound</option>
-                        <option>Pap Smear</option>
-                        <option>Blood Test</option>
+                        <option>General Check-up</option>
+                        <option>Teeth Cleaning</option>
+                        <option>Fillings & Restorations</option>
+                        <option>Tooth Extraction</option>
+                        <option>Root Canal Treatment</option>
+                        <option>Dentures & Crowns</option>
+                        <option>Teeth Whitening</option>
+                        <option>Other Dental Services</option>
                       </select>
                     </div>
                   </div>

@@ -123,7 +123,7 @@ export const AdminPage: React.FC = () => {
         <div className="bg-white rounded-3xl shadow-xl max-w-md w-full p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-serif text-ttdi-green mb-2">Admin Login</h1>
-            <p className="text-gray-500">Klinik Famili TTDI</p>
+            <p className="text-gray-500">Bala Dental Clinic</p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
@@ -166,7 +166,7 @@ export const AdminPage: React.FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-2xl font-serif">Appointment Dashboard</h1>
-              <p className="text-green-200 text-sm">Klinik Famili TTDI</p>
+              <p className="text-blue-200 text-sm">Bala Dental Clinic</p>
             </div>
             <div className="flex items-center space-x-4">
               <Link
@@ -333,7 +333,7 @@ export const AdminPage: React.FC = () => {
 
         {/* Footer */}
         <div className="mt-8 text-center text-gray-400 text-sm">
-          <p>Klinik Famili TTDI - Appointment Management System</p>
+          <p>Bala Dental Clinic - Appointment Management System</p>
         </div>
       </main>
     </div>

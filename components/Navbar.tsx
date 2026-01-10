@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 interface NavbarProps {
   isScrolled: boolean;
@@ -7,25 +8,34 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   const navLinks = [
     { name: 'Home', href: '#home' },
     { name: 'Services', href: '#services' },
     { name: 'About', href: '#about' },
-    { name: 'Doctors', href: '#doctors' },
+    { name: 'Our Dentists', href: '#doctors' },
     { name: 'Contact', href: '#contact' },
   ];
+
+  const handleNavClick = (href: string) => {
+    if (!isHomePage) {
+      window.location.href = '/' + href;
+    }
+    setIsOpen(false);
+  };
 
   return (
     <nav className={`fixed w-full z-40 transition-all duration-300 ${isScrolled ? 'bg-white shadow-md py-3' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <a href="#home" className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <span className={`text-2xl font-serif font-bold ${isScrolled ? 'text-ttdi-green' : 'text-ttdi-green'}`}>
-                Klinik Famili <span className="text-terracotta">TTDI</span>
+                Bala <span className="text-terracotta">Dental</span>
               </span>
-            </a>
+            </Link>
           </div>
 
           {/* Desktop Nav */}
@@ -33,15 +43,15 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
             {navLinks.map((link) => (
               <a
                 key={link.name}
-                href={link.href}
+                href={isHomePage ? link.href : '/' + link.href}
                 className={`text-sm font-medium transition-colors hover:text-terracotta ${isScrolled ? 'text-[#333333]' : 'text-[#333333]'}`}
               >
                 {link.name}
               </a>
             ))}
             <a
-              href="#contact"
-              className="bg-ttdi-green text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-[#1a3d28] transition-all transform hover:scale-105"
+              href={isHomePage ? '#contact' : '/#contact'}
+              className="bg-ttdi-green text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-[#164a6e] transition-all transform hover:scale-105"
             >
               Book Now
             </a>
@@ -72,7 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
             {navLinks.map((link) => (
               <a
                 key={link.name}
-                href={link.href}
+                href={isHomePage ? link.href : '/' + link.href}
                 className="block px-3 py-4 text-base font-medium text-[#333333] hover:text-ttdi-green"
                 onClick={() => setIsOpen(false)}
               >
@@ -80,7 +90,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
               </a>
             ))}
             <a
-              href="#contact"
+              href={isHomePage ? '#contact' : '/#contact'}
               className="block w-full text-center bg-ttdi-green text-white px-3 py-4 rounded-md font-medium"
               onClick={() => setIsOpen(false)}
             >

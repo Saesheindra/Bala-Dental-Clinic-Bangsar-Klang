@@ -5,7 +5,7 @@ import { getHealthGuidance } from '../services/geminiService';
 export const HealthAssistant: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user' | 'assistant', text: string}[]>([
-    { role: 'assistant', text: "Hello! I'm your Klinik Famili TTDI health assistant. How can I help your family today?" }
+    { role: 'assistant', text: "Hello! I'm your Bala Dental Clinic assistant. How can I help you with your dental needs today?" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ export const HealthAssistant: React.FC = () => {
     <div className="fixed bottom-6 right-6 z-50">
       {/* Trigger Button */}
       {!isOpen && (
-        <button 
+        <button
           onClick={() => setIsOpen(true)}
           className="bg-ttdi-green text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform animate-bounce hover:animate-none"
         >
@@ -50,10 +50,10 @@ export const HealthAssistant: React.FC = () => {
         <div className="bg-white w-[350px] md:w-[400px] h-[500px] rounded-3xl shadow-2xl flex flex-col border border-ivory overflow-hidden transition-all duration-300">
           <div className="bg-ttdi-green text-white p-5 flex justify-between items-center">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl">👩‍⚕️</div>
+              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-xl">🦷</div>
               <div>
-                <h4 className="font-serif font-bold leading-none">Health Assistant</h4>
-                <p className="text-[10px] uppercase font-bold tracking-widest text-green-200 mt-1">Klinik Famili TTDI</p>
+                <h4 className="font-serif font-bold leading-none">Dental Assistant</h4>
+                <p className="text-[10px] uppercase font-bold tracking-widest text-blue-200 mt-1">Bala Dental Clinic</p>
               </div>
             </div>
             <button onClick={() => setIsOpen(false)} className="text-white/60 hover:text-white transition-colors">
@@ -67,8 +67,8 @@ export const HealthAssistant: React.FC = () => {
             {messages.map((m, i) => (
               <div key={i} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm ${
-                  m.role === 'user' 
-                  ? 'bg-ttdi-green text-white rounded-br-none' 
+                  m.role === 'user'
+                  ? 'bg-ttdi-green text-white rounded-br-none'
                   : 'bg-white text-[#333] shadow-sm rounded-bl-none'
                 }`}>
                   {m.text}
@@ -83,16 +83,16 @@ export const HealthAssistant: React.FC = () => {
           </div>
 
           <form onSubmit={handleSend} className="p-4 bg-white border-t flex space-x-2">
-            <input 
-              type="text" 
-              placeholder="Ask a health question..." 
+            <input
+              type="text"
+              placeholder="Ask a dental question..."
               className="flex-1 px-4 py-3 rounded-full bg-gray-100 border-none focus:ring-2 focus:ring-ttdi-green outline-none text-sm"
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
-            <button 
+            <button
               type="submit"
-              className="bg-ttdi-green text-white p-3 rounded-full hover:bg-[#1a3d28] transition-colors"
+              className="bg-ttdi-green text-white p-3 rounded-full hover:bg-[#164a6e] transition-colors"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -100,7 +100,7 @@ export const HealthAssistant: React.FC = () => {
             </button>
           </form>
           <div className="p-2 text-center bg-gray-50">
-            <p className="text-[9px] text-gray-400 uppercase font-bold tracking-widest">In emergency call 03-7727 6671</p>
+            <p className="text-[9px] text-gray-400 uppercase font-bold tracking-widest">Book appointment: 03-2284 6153</p>
           </div>
         </div>
       )}
