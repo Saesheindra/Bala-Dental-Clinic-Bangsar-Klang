@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Nunito', sans-serif;
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-sans {
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.bg-ttdi-green {
+  background-color: #2D5A3D;
+}
+
+.text-ttdi-green {
+  color: #2D5A3D;
+}
+
+.bg-ivory {
+  background-color: #FDF6EC;
+}
+
+.border-ivory {
+  border-color: #FDF6EC;
+}
+
+.bg-terracotta {
+  background-color: #E07A5F;
+}
+
+.text-terracotta {
+  color: #E07A5F;
+}
+
+.animate-pulse-custom {
+  animation: pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-custom {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
