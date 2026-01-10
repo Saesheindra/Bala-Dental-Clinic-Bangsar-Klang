@@ -32,9 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <span className={`text-2xl font-serif font-bold ${isScrolled ? 'text-ttdi-green' : 'text-ttdi-green'}`}>
-                Bala <span className="text-terracotta">Dental</span>
-              </span>
+              <img src="/assets/OLC (1).webp" alt="Bala Dental Clinic" className="h-10 md:h-12" />
             </Link>
           </div>
 

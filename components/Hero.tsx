@@ -25,7 +25,7 @@ export const Hero: React.FC = () => {
             </h1>
 
             <p className="text-lg md:text-xl text-gray-600 max-w-lg mx-auto md:mx-0 leading-relaxed font-sans">
-              Trusted dental care in Bangsar and Klang since 1991. Over 34 years of experience led by Dato' Dr. Balakrishnan.
+              Trusted dental care in Bangsar and Klang since 1983. Over 40 years of experience led by Dato' Dr. Balakrishnan.
             </p>
 
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center md:justify-start">
@@ -48,7 +48,7 @@ export const Hero: React.FC = () => {
 
             <div className="flex items-center space-x-6 justify-center md:justify-start pt-4">
               <div className="text-center">
-                <span className="block text-2xl font-bold text-ttdi-green">34+</span>
+                <span className="block text-2xl font-bold text-ttdi-green">40+</span>
                 <span className="text-xs text-gray-500 uppercase font-bold tracking-widest">Years Experience</span>
               </div>
               <div className="h-8 w-px bg-gray-200"></div>
@@ -67,15 +67,15 @@ export const Hero: React.FC = () => {
           <div className="relative">
             <div className="relative z-10 rounded-[40px] overflow-hidden shadow-2xl border-8 border-white">
               <img
-                src="https://picsum.photos/seed/dental/800/1000"
-                alt="Bala Dental Clinic - Quality Dental Care"
+                src="/assets/IMG_6732.JPG"
+                alt="Bala Dental Clinic - Modern Treatment Room"
                 className="w-full h-auto object-cover aspect-[4/5]"
               />
             </div>
             {/* Decorative Elements */}
             <div className="absolute -bottom-6 -left-6 z-20 bg-ttdi-green text-white p-6 rounded-3xl shadow-xl hidden md:block">
               <p className="text-sm font-bold opacity-80 uppercase tracking-widest mb-1">Established</p>
-              <p className="text-4xl font-serif">1991</p>
+              <p className="text-4xl font-serif">1983</p>
             </div>
             <div className="absolute top-1/2 -right-8 -z-10 w-64 h-64 bg-terracotta opacity-10 rounded-full blur-2xl"></div>
           </div>

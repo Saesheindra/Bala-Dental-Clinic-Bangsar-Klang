@@ -7,7 +7,7 @@ export const DOCTORS: Doctor[] = [
     id: '1',
     name: "Dato' Dr. Balakrishnan",
     role: 'Principal Dentist & Founder',
-    experience: '34+ Years Experience',
+    experience: '40+ Years Experience',
     quote: 'Dedicated to providing quality dental care for the whole family.',
     languages: ['BM', 'EN', 'Tamil'],
     image: 'https://picsum.photos/seed/dentist1/400/400'

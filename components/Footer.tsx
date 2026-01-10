@@ -11,7 +11,7 @@ export const Footer: React.FC = () => {
               Bala <span className="text-terracotta">Dental</span>
             </h4>
             <p className="text-gray-500 leading-relaxed font-sans">
-              Serving families in Bangsar and Klang since 1991. Professional, gentle dental care with over 34 years of experience.
+              Serving families in Bangsar and Klang since 1983. Professional, gentle dental care with over 40 years of experience.
             </p>
             <div className="flex space-x-4">
               <a href="https://www.facebook.com/BalaDentalClinic/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-ttdi-green transition-colors">FB</a>

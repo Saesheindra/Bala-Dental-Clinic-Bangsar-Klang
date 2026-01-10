@@ -11,7 +11,7 @@ export const EmergencyBanner: React.FC = () => {
         </span>
         <span className="mx-8 font-bold text-xs uppercase tracking-[0.2em] inline-flex items-center">
           <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
-          34 Years of Quality Dental Care
+          40+ Years of Quality Dental Care
         </span>
         <span className="mx-8 font-bold text-xs uppercase tracking-[0.2em] inline-flex items-center">
           <span className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse"></span>
