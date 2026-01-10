@@ -1,5 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { TrustBar } from './components/TrustBar';
@@ -12,8 +12,9 @@ import { AppointmentForm } from './components/AppointmentForm';
 import { Footer } from './components/Footer';
 import { HealthAssistant } from './components/HealthAssistant';
 import { EmergencyBanner } from './components/EmergencyBanner';
+import { AdminPage } from './components/AdminPage';
 
-const App: React.FC = () => {
+const HomePage: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const App: React.FC = () => {
     <div className="min-h-screen relative">
       <EmergencyBanner />
       <Navbar isScrolled={isScrolled} />
-      
+
       <main>
         <Hero />
         <TrustBar />
@@ -41,12 +42,12 @@ const App: React.FC = () => {
       </main>
 
       <Footer />
-      
+
       {/* AI Assistant for health inquiries */}
       <HealthAssistant />
 
       {/* Floating Action Button for Mobile */}
-      <a 
+      <a
         href="tel:0377276671"
         className="fixed bottom-6 left-6 md:hidden z-50 bg-terracotta text-white p-4 rounded-full shadow-2xl flex items-center justify-center animate-pulse-custom"
       >
@@ -55,6 +56,17 @@ const App: React.FC = () => {
         </svg>
       </a>
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/admin" element={<AdminPage />} />
+      </Routes>
+    </Router>
   );
 };
 
