@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: Resolve white screen issue on Vercel deployment\n\n- Add missing script entry point in index.html\n- Remove conflicting esm.sh import map\n- Replace CDN Tailwind with proper Tailwind v4 setup\n- Add PostCSS configuration for Tailwind\n- Add vercel.json for deployment settings\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfeat: Add appointment booking system with admin dashboard\n\n- Add contact form with email, phone, date, time, and service fields\n- Store appointments in localStorage for data persistence\n- Create dedicated /admin page with login protection\n- Admin dashboard with stats, search, filter, and CSV export\n- Add React Router for page navigation\n- Update Vercel config for client-side routing\n\nPassword: klinikfamili2024\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)",
+      "Bash(git checkout:*)",
+      "Bash(git remote add:*)",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__get_project_url",
+      "mcp__supabase__get_publishable_keys",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__search_docs",
+      "mcp__supabase__get_advisors",
+      "mcp__supabase__execute_sql",
+      "mcp__supabase__get_logs"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}

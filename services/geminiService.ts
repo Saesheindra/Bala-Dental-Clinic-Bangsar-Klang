@@ -1,13 +1,27 @@
-
 import { GoogleGenAI } from "@google/genai";
 
 const apiKey = process.env.API_KEY || "";
-const ai = new GoogleGenAI({ apiKey });
+
+// Lazy initialization to prevent crashes on module load
+let ai: GoogleGenAI | null = null;
+
+const getAI = () => {
+  if (!ai && apiKey) {
+    ai = new GoogleGenAI({ apiKey });
+  }
+  return ai;
+};
 
 export const getHealthGuidance = async (userPrompt: string) => {
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+    const aiInstance = getAI();
+
+    if (!aiInstance) {
+      return "I am currently offline. Please call 03-2284 6153 to speak with our staff.";
+    }
+
+    const response = await aiInstance.models.generateContent({
+      model: "gemini-2.0-flash",
       contents: userPrompt,
       config: {
         systemInstruction: `
