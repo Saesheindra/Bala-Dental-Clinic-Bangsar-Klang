@@ -1,60 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-interface Appointment {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  date: string;
-  time: string;
-  service: string;
-  notes: string;
-  submittedAt: string;
-}
-
-const STORAGE_KEY = 'klinik_famili_appointments';
-
-const getStoredAppointments = (): Appointment[] => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-};
+import { supabase, Appointment } from '../lib/supabase';
 
 export const AdminPage: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
+  // Check for existing session on mount
   useEffect(() => {
-    if (isAuthenticated) {
-      setAppointments(getStoredAppointments());
-    }
-  }, [isAuthenticated]);
+    checkSession();
+  }, []);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (password === 'klinikfamili2024') {
+  const checkSession = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
       setIsAuthenticated(true);
-      setError('');
-    } else {
-      setError('Invalid password. Please try again.');
+      fetchAppointments();
     }
+    setIsLoading(false);
   };
 
-  const handleLogout = () => {
+  // Listen for auth state changes
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+      if (session) {
+        fetchAppointments();
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const fetchAppointments = async () => {
+    const { data, error } = await supabase
+      .from('appointments')
+      .select('*')
+      .order('submitted_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching appointments:', error);
+      return;
+    }
+
+    setAppointments(data || []);
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError(error.message);
+    } else {
+      setIsAuthenticated(true);
+      fetchAppointments();
+    }
+    setIsLoading(false);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setIsAuthenticated(false);
+    setEmail('');
     setPassword('');
+    setAppointments([]);
   };
 
   const exportToCSV = () => {
-    const headers = ['ID', 'Name', 'Email', 'Phone', 'Date', 'Time', 'Service', 'Notes', 'Submitted At'];
+    const headers = ['ID', 'Name', 'Email', 'Phone', 'Emergency Contact', 'Date', 'Time', 'Service', 'Notes', 'Submitted At'];
     const csvContent = [
       headers.join(','),
       ...appointments.map(apt => [
@@ -62,11 +88,12 @@ export const AdminPage: React.FC = () => {
         `"${apt.name}"`,
         apt.email,
         apt.phone,
+        apt.emergency_contact || '',
         apt.date,
         apt.time || 'Any time',
         `"${apt.service}"`,
         `"${(apt.notes || '').replace(/"/g, '""')}"`,
-        apt.submittedAt
+        apt.submitted_at
       ].join(','))
     ].join('\n');
 
@@ -77,17 +104,34 @@ export const AdminPage: React.FC = () => {
     link.click();
   };
 
-  const deleteAppointment = (id: string) => {
+  const deleteAppointment = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this appointment?')) {
-      const updated = appointments.filter(apt => apt.id !== id);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      setAppointments(updated);
+      const { error } = await supabase
+        .from('appointments')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.error('Error deleting appointment:', error);
+        return;
+      }
+
+      setAppointments(appointments.filter(apt => apt.id !== id));
     }
   };
 
-  const clearAllAppointments = () => {
+  const clearAllAppointments = async () => {
     if (window.confirm('Are you sure you want to delete ALL appointments? This cannot be undone.')) {
-      localStorage.removeItem(STORAGE_KEY);
+      const { error } = await supabase
+        .from('appointments')
+        .delete()
+        .neq('id', '00000000-0000-0000-0000-000000000000'); // Delete all rows
+
+      if (error) {
+        console.error('Error clearing appointments:', error);
+        return;
+      }
+
       setAppointments([]);
     }
   };
@@ -114,8 +158,19 @@ export const AdminPage: React.FC = () => {
         apt.phone.includes(search) ||
         apt.service.toLowerCase().includes(search)
       );
-    })
-    .sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+    });
+
+  // Loading state
+  if (isLoading && !isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ttdi-green mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return (
@@ -128,23 +183,37 @@ export const AdminPage: React.FC = () => {
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
+              <label className="text-sm font-bold text-gray-600">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-ttdi-green focus:border-transparent outline-none"
+                placeholder="admin@baladental.com"
+                autoFocus
+                required
+              />
+            </div>
+
+            <div className="space-y-2">
               <label className="text-sm font-bold text-gray-600">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-ttdi-green focus:border-transparent outline-none"
-                placeholder="Enter admin password"
-                autoFocus
+                placeholder="Enter your password"
+                required
               />
               {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>
 
             <button
               type="submit"
-              className="w-full bg-ttdi-green text-white py-3 rounded-xl font-bold hover:bg-[#1a3d28] transition-colors"
+              disabled={isLoading}
+              className="w-full bg-ttdi-green text-white py-3 rounded-xl font-bold hover:bg-[#1a3d28] transition-colors disabled:opacity-50"
             >
-              Login
+              {isLoading ? 'Signing in...' : 'Login'}
             </button>
           </form>
 
@@ -242,6 +311,12 @@ export const AdminPage: React.FC = () => {
             </div>
             <div className="flex gap-3">
               <button
+                onClick={() => fetchAppointments()}
+                className="bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-700 transition-colors"
+              >
+                Refresh
+              </button>
+              <button
                 onClick={exportToCSV}
                 disabled={appointments.length === 0}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -300,6 +375,9 @@ export const AdminPage: React.FC = () => {
                       <td className="px-6 py-4">
                         <p className="text-sm text-gray-600">{apt.email}</p>
                         <p className="text-sm text-gray-600">{apt.phone}</p>
+                        {apt.emergency_contact && (
+                          <p className="text-xs text-red-500 mt-1">Emergency: {apt.emergency_contact}</p>
+                        )}
                       </td>
                       <td className="px-6 py-4">
                         <p className="text-sm font-medium text-gray-900">
@@ -313,11 +391,11 @@ export const AdminPage: React.FC = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-500">
-                        {new Date(apt.submittedAt).toLocaleDateString('en-MY', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        {apt.submitted_at ? new Date(apt.submitted_at).toLocaleDateString('en-MY', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'N/A'}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button
-                          onClick={() => deleteAppointment(apt.id)}
+                          onClick={() => apt.id && deleteAppointment(apt.id)}
                           className="text-red-500 hover:text-red-700 text-sm font-medium"
                         >
                           Delete

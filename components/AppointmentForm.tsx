@@ -1,40 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-interface Appointment {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  date: string;
-  time: string;
-  service: string;
-  notes: string;
-  submittedAt: string;
-}
-
-const STORAGE_KEY = 'klinik_famili_appointments';
-
-const getStoredAppointments = (): Appointment[] => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch {
-    return [];
-  }
-};
-
-const saveAppointment = (appointment: Appointment): void => {
-  const appointments = getStoredAppointments();
-  appointments.push(appointment);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(appointments));
-};
+import { supabase } from '../lib/supabase';
 
 export const AppointmentForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
+    emergency_contact: '',
     date: '',
     time: '',
     service: 'General Check-up',
@@ -42,29 +15,49 @@ export const AppointmentForm: React.FC = () => {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
 
-    const newAppointment: Appointment = {
-      id: Date.now().toString(),
-      ...formData,
-      submittedAt: new Date().toISOString()
-    };
+    try {
+      const { error: insertError } = await supabase
+        .from('appointments')
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          emergency_contact: formData.emergency_contact || null,
+          date: formData.date,
+          time: formData.time || 'Any time',
+          service: formData.service,
+          notes: formData.notes || null
+        });
 
-    saveAppointment(newAppointment);
-    setSubmitted(true);
+      if (insertError) {
+        throw insertError;
+      }
 
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      date: '',
-      time: '',
-      service: 'General Check-up',
-      notes: ''
-    });
+      setSubmitted(true);
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        emergency_contact: '',
+        date: '',
+        time: '',
+        service: 'General Check-up',
+        notes: ''
+      });
+    } catch (err) {
+      console.error('Error submitting appointment:', err);
+      setError('Failed to submit appointment. Please try again or call us directly.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -140,6 +133,11 @@ export const AppointmentForm: React.FC = () => {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5 bg-white p-8 md:p-10 rounded-[40px] shadow-lg">
+                  {error && (
+                    <div className="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-sm">
+                      {error}
+                    </div>
+                  )}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className="space-y-2">
                       <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name *</label>
@@ -178,23 +176,34 @@ export const AppointmentForm: React.FC = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Select Service *</label>
-                      <select
-                        required
-                        className="w-full px-5 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-ttdi-green outline-none appearance-none"
-                        value={formData.service}
-                        onChange={(e) => setFormData({...formData, service: e.target.value})}
-                      >
-                        <option>General Check-up</option>
-                        <option>Teeth Cleaning</option>
-                        <option>Fillings & Restorations</option>
-                        <option>Tooth Extraction</option>
-                        <option>Root Canal Treatment</option>
-                        <option>Dentures & Crowns</option>
-                        <option>Teeth Whitening</option>
-                        <option>Other Dental Services</option>
-                      </select>
+                      <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Emergency Contact</label>
+                      <input
+                        type="tel"
+                        placeholder="012-3456789"
+                        className="w-full px-5 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-ttdi-green outline-none"
+                        value={formData.emergency_contact}
+                        onChange={(e) => setFormData({...formData, emergency_contact: e.target.value})}
+                      />
                     </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold text-gray-400 uppercase tracking-widest ml-1">Select Service *</label>
+                    <select
+                      required
+                      className="w-full px-5 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-ttdi-green outline-none appearance-none"
+                      value={formData.service}
+                      onChange={(e) => setFormData({...formData, service: e.target.value})}
+                    >
+                      <option>General Check-up</option>
+                      <option>Teeth Cleaning</option>
+                      <option>Fillings & Restorations</option>
+                      <option>Tooth Extraction</option>
+                      <option>Root Canal Treatment</option>
+                      <option>Dentures & Crowns</option>
+                      <option>Teeth Whitening</option>
+                      <option>Other Dental Services</option>
+                    </select>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -244,9 +253,10 @@ export const AppointmentForm: React.FC = () => {
 
                   <button
                     type="submit"
-                    className="w-full bg-ttdi-green text-white py-5 rounded-2xl font-bold text-lg hover:bg-[#1a3d28] transition-all transform hover:scale-[1.02] shadow-xl"
+                    disabled={isSubmitting}
+                    className="w-full bg-ttdi-green text-white py-5 rounded-2xl font-bold text-lg hover:bg-[#1a3d28] transition-all transform hover:scale-[1.02] shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
-                    Book Appointment
+                    {isSubmitting ? 'Submitting...' : 'Book Appointment'}
                   </button>
                 </form>
               )}
