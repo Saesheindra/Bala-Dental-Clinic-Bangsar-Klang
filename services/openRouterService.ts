@@ -1,12 +1,13 @@
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || '';
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
-// Free models available on OpenRouter (as of 2025)
+// Free models available on OpenRouter (updated January 2025)
 const FREE_MODELS = [
-  'deepseek/deepseek-r1:free',
-  'meta-llama/llama-3.3-8b-instruct:free',
-  'google/gemma-3-4b-it:free',
-  'mistralai/mistral-small-3.1-24b-instruct:free'
+  'deepseek/deepseek-chat-v3-0324:free',
+  'google/gemma-3-27b-it:free',
+  'meta-llama/llama-3.3-70b-instruct:free',
+  'deepseek/deepseek-r1-distill-llama-70b:free',
+  'deepseek/deepseek-r1:free'
 ];
 
 const SYSTEM_PROMPT = `You are a friendly and professional Dental Assistant for Bala Dental Clinic, a trusted family dental practice with two locations in Bangsar and Klang, Malaysia.
@@ -62,7 +63,12 @@ export const sendChatMessage = async (
   userMessage: string,
   conversationHistory: Message[] = []
 ): Promise<ChatResponse> => {
+  // Debug: Check if API key is loaded
+  const keyStatus = OPENROUTER_API_KEY ? `Key loaded (${OPENROUTER_API_KEY.substring(0, 10)}...)` : 'No key';
+  console.log('OpenRouter API:', keyStatus);
+
   if (!OPENROUTER_API_KEY) {
+    console.error('OpenRouter API key is not configured');
     return {
       success: false,
       message: "I'm currently offline. Please call us at 03-2284 6153 for assistance.",
@@ -77,14 +83,18 @@ export const sendChatMessage = async (
   ];
 
   // Try each free model in order until one works
+  let lastError = '';
+
   for (const model of FREE_MODELS) {
     try {
+      console.log(`Trying model: ${model}`);
+
       const response = await fetch(OPENROUTER_API_URL, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
           'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://bala-one.vercel.app',
+          'HTTP-Referer': window.location.origin || 'https://bala-one.vercel.app',
           'X-Title': 'Bala Dental Clinic'
         },
         body: JSON.stringify({
@@ -95,20 +105,26 @@ export const sendChatMessage = async (
         })
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        console.warn(`Model ${model} failed with status ${response.status}, trying next...`);
+        lastError = data.error?.message || `Status ${response.status}`;
+        console.warn(`Model ${model} failed: ${lastError}`);
         continue;
       }
 
-      const data = await response.json();
-
       if (data.choices && data.choices[0]?.message?.content) {
+        console.log(`Success with model: ${model}`);
         return {
           success: true,
           message: data.choices[0].message.content
         };
+      } else {
+        lastError = 'No content in response';
+        console.warn(`Model ${model}: No content in response`);
       }
     } catch (error) {
+      lastError = error instanceof Error ? error.message : 'Unknown error';
       console.warn(`Model ${model} error:`, error);
       continue;
     }
