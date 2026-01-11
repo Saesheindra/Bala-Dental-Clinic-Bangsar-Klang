@@ -8,8 +8,8 @@ export const About: React.FC = () => {
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="relative">
             <div className="grid grid-cols-2 gap-4">
-              <img src="/assets/IMG_6732.JPG" alt="Bala Dental Clinic Treatment Room" className="rounded-3xl shadow-lg mt-12 object-cover h-[300px]" />
-              <img src="/assets/OLC.webp" alt="Modern Dental Equipment" className="rounded-3xl shadow-lg object-cover h-[250px]" />
+              <img src="/assets/treatment-room.jpg" alt="Bala Dental Clinic Treatment Room" className="rounded-3xl shadow-lg mt-12 object-cover h-[300px]" />
+              <img src="/assets/clinic.webp" alt="Modern Dental Equipment" className="rounded-3xl shadow-lg object-cover h-[250px]" />
             </div>
             {/* Years badge */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-full shadow-2xl border-8 border-ivory text-center w-48 h-48 flex flex-col justify-center">

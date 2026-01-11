@@ -32,7 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({ isScrolled }) => {
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="/assets/OLC (1).webp" alt="Bala Dental Clinic" className="h-10 md:h-12" />
+              <img src="/assets/logo.webp" alt="Bala Dental Clinic" className="h-10 md:h-12" />
             </Link>
           </div>
 
