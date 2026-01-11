@@ -10,7 +10,6 @@ import { Location } from './components/Location';
 import { Testimonials } from './components/Testimonials';
 import { AppointmentForm } from './components/AppointmentForm';
 import { Footer } from './components/Footer';
-import { HealthAssistant } from './components/HealthAssistant';
 import { EmergencyBanner } from './components/EmergencyBanner';
 import { AdminPage } from './components/AdminPage';
 
@@ -42,9 +41,6 @@ const HomePage: React.FC = () => {
       </main>
 
       <Footer />
-
-      {/* AI Assistant for health inquiries */}
-      <HealthAssistant />
 
       {/* Floating Action Button for Mobile */}
       <a
