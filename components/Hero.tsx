@@ -67,7 +67,7 @@ export const Hero: React.FC = () => {
           <div className="relative">
             <div className="relative z-10 rounded-[40px] overflow-hidden shadow-2xl border-8 border-white">
               <img
-                src="/assets/IMG_6732.JPG"
+                src="/assets/treatment-room.jpg"
                 alt="Bala Dental Clinic - Modern Treatment Room"
                 className="w-full h-auto object-cover aspect-[4/5]"
               />
