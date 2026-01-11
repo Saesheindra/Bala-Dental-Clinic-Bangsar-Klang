@@ -12,6 +12,7 @@ import { AppointmentForm } from './components/AppointmentForm';
 import { Footer } from './components/Footer';
 import { EmergencyBanner } from './components/EmergencyBanner';
 import { AdminPage } from './components/AdminPage';
+import { HealthAssistant } from './components/HealthAssistant';
 
 const HomePage: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -41,6 +42,9 @@ const HomePage: React.FC = () => {
       </main>
 
       <Footer />
+
+      {/* AI Dental Assistant Chatbot */}
+      <HealthAssistant />
 
       {/* Floating Action Button for Mobile */}
       <a
